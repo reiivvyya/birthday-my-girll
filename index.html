@@ -594,4 +594,85 @@ function nextPage(){
   page++;showPage();rainHearts(4);
  }else{
   document.getElementById('bookDone').style.display='inline-block';
-  document.getElementById
+  document.getElementById('bookHint').textContent=
+  "You've reached the last page. I hope you liked it. ♡";
+ }
+}
+function prevPage(){
+ if(page>0){page--;showPage()}
+}
+
+// SECRET HEARTS
+const messages=[
+"You're my favorite notification. ♡",
+"I hope you smile today. You deserve it.",
+"Even a small moment with you means a lot to me.",
+"You're loved more than you know. ♥",
+"Here's a tiny heart for my favorite girl. 💗",
+"Last one: I LOVE YOU MORE, SAYANG. ♡"
+];
+let revealed=[];
+
+function reveal(i){
+ if(revealed.includes(i))return;
+ revealed.push(i);
+ const btn=document.getElementById('heartGrid').children[i];
+ btn.textContent='♥';
+ btn.classList.add('done');
+ document.getElementById('secretMessage').textContent=messages[i];
+ document.getElementById('heartCount').textContent=revealed.length+' / 6 found';
+ rainHearts(5);
+ if(revealed.length===6){
+  document.getElementById('heartNext').style.display='inline-block';
+ }
+}
+
+// BLOW CANDLES
+let wished=false;
+function makeWish(){
+ if(wished)return;
+ wished=true;
+ document.getElementById('candle').textContent='🍰';
+ document.getElementById('wishText').textContent=
+ "May your wish come true, one beautiful day at a time. ♡";
+ document.getElementById('wishButton').textContent='WISH MADE ♥';
+ document.getElementById('wishNext').style.display='inline-block';
+ rainHearts(25);
+}
+
+// GIFT
+function openGift(){
+ document.getElementById('giftQuestion').textContent=
+ "Yay! Your present is waiting. Tap the box! ♡";
+ document.getElementById('giftBox').style.display='inline-block';
+}
+function unwrap(){
+ document.getElementById('giftBox').textContent='💝';
+ document.getElementById('giftMessage').style.display='block';
+ rainHearts(35);
+}
+
+// HEART RAIN
+function rainHearts(amount=20){
+ const shapes=['♥','♡','💗','💕','✦'];
+ for(let i=0;i<amount;i++){
+  const h=document.createElement('span');
+  h.className='heart-fall';
+  h.textContent=shapes[Math.floor(Math.random()*shapes.length)];
+  h.style.left=Math.random()*100+'vw';
+  h.style.color=['#ff8db7','#ffcee0','#ffffff','#e85b9d'][Math.floor(Math.random()*4)];
+  h.style.fontSize=(12+Math.random()*22)+'px';
+  h.style.animationDuration=(3+Math.random()*4)+'s';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),7500);
+ }
+}
+function finale(){
+ rainHearts(100);
+ document.getElementById('finalMessage').textContent=
+ "A whole sky full of love, just for you. I LOVE YOU MORE, SAYANG. ♥";
+}
+</script>
+</body>
+</html>
+
