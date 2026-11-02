@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Favorite Girl ♡</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+:root{
+ --pink:#ff8db7;
+ --light:#ffc3d9;
+ --dark:#08060d;
+ --purple:#35152c;
+ --text:#fceaf2;
+}
+html{scroll-behavior:smooth}
+body{
+ margin:0;background:#050509;color:var(--text);
+ font-family:Manrope,sans-serif;overflow-x:hidden;
+}
+button{font:inherit;cursor:pointer}
+#stars{
+ position:fixed;inset:0;pointer-events:none;
+ overflow:hidden;z-index:0;
+}
+.star{
+ position:absolute;border-radius:50%;background:white;
+ animation:twinkle 2s infinite alternate;
+}
+@keyframes twinkle{
+ to{opacity:.12;transform:scale(.5)}
+}
+.screen{
+ display:none;position:relative;z-index:1;
+ min-height:100svh;padding:35px 17px;
+ align-items:center;justify-content:center;
+}
+.screen.active{display:flex;animation:appear .7s ease}
+@keyframes appear{
+ from{opacity:0;transform:translateY(15px)}
+ to{opacity:1;transform:none}
+}
+.container{width:min(100%,650px);text-align:center;margin:auto}
+.panel{
+ background:linear-gradient(145deg,#17111e,#0b0911);
+ border:1px solid #ffffff20;border-radius:25px;
+ padding:28px 20px;
+ box-shadow:0 20px 80px #0009,0 0 35px #ff83b40b;
+}
+.eyebrow{
+ font-size:10px;letter-spacing:4px;color:var(--pink);
+ font-weight:800;
+}
+h1,h2{font-family:"DM Serif Display",serif;font-weight:400}
+h1{
+ font-size:clamp(42px,10vw,76px);
+ line-height:1.08;margin:20px 0;
+}
+h2{font-size:clamp(28px,7vw,42px);margin:12px 0;color:var(--light)}
+p{font-size:13px;line-height:2;color:#c9bdca}
+.mini{font-size:11px;color:#958597}
+.pink{color:var(--pink)}
+.line{height:1px;width:65px;background:var(--pink);margin:18px auto}
+.btn{
+ background:var(--pink);color:#180b14;border:0;
+ border-radius:40px;padding:13px 22px;
+ font-size:12px;font-weight:800;margin:7px 3px;
+ box-shadow:0 0 25px #ff8db733;transition:.25s;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 0 30px #ff8db788}
+.btn.ghost{
+ background:transparent;border:1px solid #ff9cbe;
+ color:var(--light);box-shadow:none;
+}
+.choice{display:flex;justify-content:center;flex-wrap:wrap;gap:5px}
+.big-heart{
+ font-size:65px;filter:drop-shadow(0 0 20px #ff5e9e);
+ animation:heartbeat 1.5s infinite;
+}
+@keyframes heartbeat{50%{transform:scale(1.12)}}
+.intro-heart{
+ font-size:90px;filter:drop-shadow(0 0 35px #ff4b9c);
+ animation:heartbeat 1.5s infinite;
+}
+.intro-title{
+ background:linear-gradient(90deg,#fff,#ff8db7,#fff);
+ background-clip:text;color:transparent;
+}
+
+/* BOOK 3D */
+.book-stage{
+ perspective:1800px;width:min(94vw,620px);
+ margin:30px auto 18px;
+}
+.book{
+ position:relative;width:270px;height:360px;
+ margin:auto;transform-style:preserve-3d;
+ transition:width 1s ease;
+}
+.book.open{width:min(100%,590px)}
+.back-cover{
+ position:absolute;inset:0;background:#21101f;
+ border:1px solid #8b4567;border-radius:5px 13px 13px 5px;
+ box-shadow:inset 8px 0 12px #0008;
+}
+.pages-stack{
+ position:absolute;left:50%;top:4px;width:50%;
+ height:calc(100% - 8px);
+ background:repeating-linear-gradient(
+  0deg,#271522 0px,#271522 3px,#4b293b 4px
+ );
+ border-radius:0 8px 8px 0;
+}
+.left-paper,.right-paper{
+ position:absolute;top:4px;width:50%;
+ height:calc(100% - 8px);
+ background:linear-gradient(145deg,#17101d,#241322);
+ color:#ffd5e5;border:1px solid #69334f;
+ padding:22px 15px;
+ opacity:0;transition:opacity .5s 1s;
+}
+.left-paper{
+ left:0;border-radius:8px 0 0 8px;
+ display:flex;align-items:center;justify-content:center;
+ text-align:center;
+ box-shadow:inset -8px 0 15px #0005;
+}
+.right-paper{
+ right:0;border-radius:0 8px 8px 0;
+ display:flex;flex-direction:column;
+ justify-content:space-between;text-align:left;
+ box-shadow:inset 8px 0 15px #0005;
+}
+.book.open .left-paper,.book.open .right-paper{opacity:1}
+.left-paper h3,.right-paper h3{
+ font:24px "DM Serif Display",serif;color:#ff9fc5;
+}
+.left-paper p,.right-paper p{
+ color:#e8c5d5;font-size:11px;line-height:1.85;
+ white-space:pre-line;
+}
+.page-number{
+ color:#ff8db7;font-size:9px;text-align:center;
+ letter-spacing:2px;
+}
+.cover{
+ position:absolute;top:0;left:0;width:50%;height:100%;
+ transform-origin:left center;transform-style:preserve-3d;
+ transition:transform 1.5s cubic-bezier(.2,.7,.15,1);
+ z-index:5;
+}
+.book.open .cover{transform:rotateY(-180deg)}
+.cover-front,.cover-back{
+ position:absolute;inset:0;backface-visibility:hidden;
+ border:1px solid #a85c7b;border-radius:7px 0 0 7px;
+ display:flex;flex-direction:column;
+ align-items:center;justify-content:center;
+ padding:14px;text-align:center;
+}
+.cover-front{
+ background:linear-gradient(140deg,#35172b,#100b18 65%,#55213e);
+ box-shadow:inset 6px 0 15px #0008,4px 0 10px #0008;
+}
+.cover-front h2{font-size:25px;color:#ffd1e3}
+.cover-front p{font-size:9px;color:#d8a6bc}
+.cover-front .big-heart{font-size:48px}
+.cover-back{
+ background:linear-gradient(135deg,#190d1b,#35152c);
+ transform:rotateY(180deg);color:#ffc5dc;
+}
+.cover-back p{color:#e8b5ce;font-size:11px}
+.book-shadow{
+ position:absolute;left:5%;right:5%;bottom:-15px;
+ height:20px;background:#ff8db722;
+ filter:blur(18px);border-radius:50%;
+}
+.book-controls{
+ display:none;justify-content:center;gap:7px;flex-wrap:wrap;
+}
+.book-controls.show{display:flex}
+.page-turn{animation:pageTurn .5s ease}
+@keyframes pageTurn{
+ 0%{transform:rotateY(0);opacity:1}
+ 50%{transform:rotateY(-15deg);opacity:.5}
+ 100%{transform:rotateY(0);opacity:1}
+}
+
+/* ORBIT */
+.universe{
+ height:340px;display:grid;place-items:center;
+ position:relative;margin:10px auto;
+}
+.planet{
+ width:115px;height:115px;border-radius:50%;
+ display:grid;place-items:center;font-size:55px;
+ background:radial-gradient(circle at 35% 30%,#ffbad5,#e34d94 45%,#541b58 80%);
+ box-shadow:0 0 30px #ff6aaa,0 0 90px #d62e8b55;
+ z-index:2;animation:planetFloat 3s ease-in-out infinite;
+}
+@keyframes planetFloat{50%{transform:translateY(-9px)}}
+.orbit{
+ position:absolute;width:290px;height:150px;
+ border:1px solid #ff9bc855;border-radius:50%;
+ transform:rotate(-25deg);animation:spin 9s linear infinite;
+}
+.orbit.two{
+ width:330px;height:210px;transform:rotate(60deg);
+ animation-duration:13s;
+}
+@keyframes spin{to{transform:rotate(335deg)}}
+.orbit-word{
+ position:absolute;top:-13px;left:35%;
+ font-size:10px;letter-spacing:2px;color:#ffbad5;
+ background:#08060d;padding:4px 7px;white-space:nowrap;
+}
+.orbit-heart{
+ position:absolute;font-size:20px;
+ filter:drop-shadow(0 0 8px #ff5b9f);
+}
+.orbit-heart.a{top:20px;right:18px}
+.orbit-heart.b{bottom:15px;left:20px}
+.orbit-heart.c{top:10px;left:30px}
+.orbit-heart.d{bottom:20px;right:35px}
+
+/* SECRET HEARTS */
+.heart-grid{
+ display:grid;grid-template-columns:repeat(3,1fr);
+ gap:12px;margin:25px auto;max-width:400px;
+}
+.secret-heart{
+ border:1px solid #ff8db733;background:#17101d;
+ border-radius:17px;color:#ff8db7;font-size:35px;
+ padding:17px 5px;transition:.3s;
+ box-shadow:0 0 20px #ff8db70a;
+}
+.secret-heart:hover{transform:scale(1.08);background:#301426}
+.secret-heart.done{background:#421c35;box-shadow:0 0 18px #ff8db744}
+.message-box{
+ min-height:75px;padding:17px;border:1px solid #ff8db744;
+ border-radius:15px;background:#140e19;
+ color:#ffd1e3;font-size:13px;line-height:1.8;
+}
+
+/* GIFT */
+.gift-box{
+ font-size:100px;display:inline-block;
+ animation:heartbeat 2s infinite;cursor:pointer;
+}
+.gift-message{
+ display:none;background:#1b1020;
+ border:1px solid #ff8db755;border-radius:18px;
+ padding:20px;margin-top:15px;
+}
+
+/* FINAL */
+.final-orbit{
+ margin:20px auto;position:relative;
+ width:260px;height:260px;display:grid;place-items:center;
+}
+.final-orbit .planet{width:105px;height:105px;font-size:48px}
+.final-ring{
+ position:absolute;inset:15px;border:1px solid #ff8db777;
+ border-radius:50%;animation:spin 12s linear infinite;
+}
+.final-ring:before,.final-ring:after{
+ content:"♡";position:absolute;color:#ff9fc2;font-size:25px;
+}
+.final-ring:before{top:12px;left:25px}
+.final-ring:after{bottom:10px;right:25px}
+.final-words{
+ font-size:clamp(35px,9vw,60px);
+ color:#ffb2ce;text-shadow:0 0 30px #ff4e9d;
+}
+.signature{font:italic 17px "DM Serif Display",serif;color:#ffbed6}
+.heart-fall{
+ position:fixed;top:-30px;z-index:10;pointer-events:none;
+ animation:fall linear forwards;
+}
+@keyframes fall{
+ to{transform:translateY(110vh) rotate(360deg);opacity:0}
+}
+@media(max-width:390px){
+ .book{height:330px;width:250px}
+ .book.open{width:100%}
+ .left-paper,.right-paper{padding:15px 10px}
+ .right-paper p,.left-paper p{font-size:10px}
+ .right-paper h3,.left-paper h3{font-size:18px}
+ .orbit{width:260px}
+ .orbit.two{width:290px}
+}
+</style>
+</head>
+
+<body>
+<div id="stars"></div>
+
+<!-- 1. INTRO -->
+<section class="screen active" id="s1">
+<div class="container">
+ <div class="eyebrow">A LITTLE UNIVERSE, MADE FOR YOU</div>
+ <div class="intro-heart">♡</div>
+ <h1 class="intro-title">You are my<br>favorite universe.</h1>
+ <p>Out of all the stars in the sky,<br>somehow my heart found you.</p>
+ <div class="line"></div>
+ <p class="mini">A little birthday surprise is waiting for you.</p>
+ <button class="btn" onclick="go(2)">ENTER MY UNIVERSE ♡</button>
+</div>
+</section>
+
+<!-- 2. QUESTION -->
+<section class="screen" id="s2">
+<div class="container panel">
+ <div class="eyebrow">BEFORE WE START</div>
+ <div class="big-heart">💗</div>
+ <h2>Are you ready, sayang?</h2>
+ <p>I made something for you.<br>
+ There are little surprises, hidden messages,<br>
+ and a lot of love waiting inside.</p>
+ <div class="choice">
+  <button class="btn" onclick="go(3)">I'M READY! ♡</button>
+  <button class="btn ghost" onclick="later()">WAIT A LITTLE</button>
+ </div>
+ <p class="mini" id="laterText"></p>
+</div>
+</section>
+
+<!-- 3. BUKU 3D -->
+<section class="screen" id="s3">
+<div class="container">
+ <div class="eyebrow">CHAPTER 01 · A BOOK FOR YOU</div>
+ <h2>Something I made with love.</h2>
+ <p>There's a little book waiting for you.<br>Tap the cover and let it open...</p>
+
+ <div class="book-stage">
+  <div class="book" id="book">
+   <div class="back-cover"></div>
+   <div class="pages-stack"></div>
+
+   <div class="left-paper">
+    <div>
+     <div style="font-size:35px;color:#ff9fc5">♡</div>
+     <h3>To my love</h3>
+     <p>A little space for all the things I want you to know.</p>
+    </div>
+   </div>
+
+   <div class="right-paper" id="rightPaper">
+    <div>
+     <div class="page-number" id="pageNumber">PAGE 01</div>
+     <h3 id="pageTitle">Happy Birthday</h3>
+     <p id="pageText"></p>
+    </div>
+    <div style="text-align:center;color:#ff8db7">♡ ♡ ♡</div>
+   </div>
+
+   <div class="cover" id="cover" onclick="openBook()">
+    <div class="cover-front">
+     <div class="big-heart">♡</div>
+     <h2>My favorite<br>person</h2>
+     <p>A BOOK FULL OF LITTLE LOVE NOTES</p>
+     <div style="font-size:22px">✦ ♡ ✦</div>
+     <p>tap to open</p>
+    </div>
+    <div class="cover-back">
+     <div style="font-size:45px">🌙</div>
+     <h3 style="font:23px 'DM Serif Display'">For you, always.</h3>
+     <p>Every page is written with love.</p>
+    </div>
+   </div>
+   <div class="book-shadow"></div>
+  </div>
+ </div>
+
+ <div class="book-controls" id="bookControls">
+  <button class="btn ghost" onclick="prevPage()">← BACK</button>
+  <button class="btn" id="nextPageBtn" onclick="nextPage()">NEXT PAGE →</button>
+ </div>
+ <p class="mini" id="bookHint">The book is waiting for you to open it ♡</p>
+ <button class="btn" id="bookDone" style="display:none" onclick="go(4)">CONTINUE OUR STORY ♡</button>
+</div>
+</section>
+
+<!-- 4. PLANET LOVE -->
+<section class="screen" id="s4">
+<div class="container">
+ <div class="eyebrow">CHAPTER 02 · MY UNIVERSE</div>
+ <h2>In the middle of everything...</h2>
+ <p>There's one heart that keeps choosing you.</p>
+
+ <div class="universe">
+  <div class="orbit">
+   <span class="orbit-word">I LOVE YOU MORE, SAYANG ♡</span>
+   <span class="orbit-heart a">♥</span>
+   <span class="orbit-heart b">♡</span>
+  </div>
+  <div class="orbit two">
+   <span class="orbit-word">MY FAVORITE GIRL ✦</span>
+   <span class="orbit-heart c">💗</span>
+   <span class="orbit-heart d">♥</span>
+  </div>
+  <div class="planet">💗</div>
+ </div>
+
+ <p>You're the little planet my heart<br>never gets tired of orbiting.</p>
+ <button class="btn" onclick="go(5)">THAT'S SO SWEET ♡</button>
+</div>
+</section>
+
+<!-- 5. HIDDEN LOVE -->
+<section class="screen" id="s5">
+<div class="container panel">
+ <div class="eyebrow">CHAPTER 03 · HIDDEN LOVE NOTES</div>
+ <h2>Find my little hearts.</h2>
+ <p>Tap every heart. Each one has a message for you.</p>
+ <div class="heart-grid" id="heartGrid">
+  <button class="secret-heart" onclick="reveal(0)">♡</button>
+  <button class="secret-heart" onclick="reveal(1)">♡</button>
+  <button class="secret-heart" onclick="reveal(2)">♡</button>
+  <button class="secret-heart" onclick="reveal(3)">♡</button>
+  <button class="secret-heart" onclick="reveal(4)">♡</button>
+  <button class="secret-heart" onclick="reveal(5)">♡</button>
+ </div>
+ <div class="message-box" id="secretMessage">Pick one little heart to open it...</div>
+ <p class="mini" id="heartCount">0 / 6 found</p>
+ <button class="btn" id="heartNext" style="display:none" onclick="go(6)">ALL MY HEARTS FOUND →</button>
+</div>
+</section>
+
+<!-- 6. CAKE -->
+<section class="screen" id="s6">
+<div class="container panel">
+ <div class="eyebrow">CHAPTER 04 · MAKE A WISH</div>
+ <div class="big-heart">🕯️</div>
+ <h2>One wish, just for you.</h2>
+ <p>Take a little moment for yourself.<br>
+ Close your eyes, make a wish,<br>
+ and tap the button when you're ready.</p>
+ <div style="font-size:75px;margin:20px" id="candle">🎂</div>
+ <button class="btn" id="wishButton" onclick="makeWish()">BLOW THE CANDLES ♡</button>
+ <p id="wishText" class="pink"></p>
+ <button class="btn" id="wishNext" style="display:none" onclick="go(7)">MY WISH FOR YOU →</button>
+</div>
+</section>
+
+<!-- 7. GIFT -->
+<section class="screen" id="s7">
+<div class="container panel">
+ <div class="eyebrow">CHAPTER 05 · A LITTLE PRESENT</div>
+ <h2>Do you want your gift?</h2>
+ <p>I have something waiting for you.<br>Are you ready to open it?</p>
+ <div class="choice">
+  <button class="btn" onclick="openGift()">YES, I WANT IT! 🎁</button>
+  <button class="btn ghost" onclick="document.getElementById('giftQuestion').textContent='Hehe, I will wait for you, sayang. ♡'">WAIT A LITTLE</button>
+ </div>
+ <p class="mini" id="giftQuestion"></p>
+ <div class="gift-box" id="giftBox" style="display:none" onclick="unwrap()">🎁</div>
+ <div class="gift-message" id="giftMessage">
+  <div style="font-size:45px">💗</div>
+  <h2>Your little present!</h2>
+  <p>Your gift is a reminder that you are loved, appreciated, and worth celebrating. I hope this little surprise makes you smile.</p>
+  <button class="btn" onclick="go(8)">CONTINUE TO MY MESSAGE ♡</button>
+ </div>
+</div>
+</section>
+
+<!-- 8. PESAN PENUTUP -->
+<section class="screen" id="s8">
+<div class="container panel">
+ <div class="eyebrow">CHAPTER 06 · A LITTLE REMINDER</div>
+ <div class="big-heart">💌</div>
+ <h2>For the days you forget...</h2>
+ <p style="font-size:14px">
+ I hope you remember that you matter.<br>
+ I hope you know you're appreciated.<br>
+ I hope life treats you kindly.<br>
+ And when things get difficult,<br>
+ I hope you find a reason to smile again.
+ </p>
+ <div class="line"></div>
+ <p class="pink">You deserve all the beautiful things in this universe.</p>
+ <button class="btn" onclick="go(9)">ONE LAST SURPRISE ♡</button>
+</div>
+</section>
+
+<!-- 9. ENDING -->
+<section class="screen" id="s9">
+<div class="container">
+ <div class="eyebrow">THE LAST CHAPTER · JUST FOR YOU</div>
+ <div class="final-orbit">
+  <div class="final-ring"></div>
+  <div class="planet">❤️</div>
+ </div>
+ <h1 class="final-words">I love you<br>more, sayang.</h1>
+ <p>More than all the stars I could ever count.<br>
+ More than all the words I could ever write.</p>
+ <div class="line"></div>
+ <p class="signature">Happy birthday, my favorite girl. ♡</p>
+ <p class="mini">Thank you for being part of my universe.</p>
+ <button class="btn" onclick="finale()">MAKE IT RAIN LOVE ♥</button>
+ <p class="mini" id="finalMessage"></p>
+ <button class="btn ghost" onclick="go(1)">READ IT ALL AGAIN ↺</button>
+</div>
+</section>
+
+<script>
+// BACKGROUND STARS
+const stars=document.getElementById('stars');
+for(let i=0;i<140;i++){
+ const s=document.createElement('i');
+ s.className='star';
+ s.style.left=Math.random()*100+'%';
+ s.style.top=Math.random()*100+'%';
+ const size=1+Math.random()*3;
+ s.style.width=size+'px';
+ s.style.height=size+'px';
+ s.style.animationDelay=Math.random()*3+'s';
+ stars.appendChild(s);
+}
+
+// NAVIGATION
+function go(n){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ document.getElementById('s'+n).classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+ if(n===9)rainHearts(25);
+}
+function later(){
+ document.getElementById('laterText').textContent=
+ "Hehe, I'll wait. This little universe isn't going anywhere. ♡";
+}
+
+// BUKU DAN SURAT ASLI
+const bookPages=[
+{
+title:"Happy Birthday, Sayang ♡",
+text:`happy birthday sayanggg, happy birthday to my favorite person. ❤️
+
+akhirnya hari ini hari ulang tahun kamu, orang yang paling aku sayang. semoga di umur kamu yang sekarang, kamu selalu bahagia, sehat, panjang umur, dan semua yang kamu inginkan bisa tercapai yaa. aku berharap hari-hari kamu ke depannya bakal jauh lebih baik, penuh kebahagiaan, dan selalu ada alasan buat kamu tersenyum.`
+},
+{
+title:"Thank You, My Love",
+text:`makasih udah hadir di hidup aku, makasih udah jadi bagian dari hari-hari aku, makasih buat semua hal kecil yang kamu lakuin. aku seneng banget bisa kenal kamu dan punya kamu di hidup aku.`
+},
+{
+title:"I'm Still Learning",
+text:`maaf ya kalau selama ini aku masih sering bikin kamu kesel, masih banyak kurangnya, atau belum bisa jadi pacar yang kamu harapin. aku bakal terus belajar buat jadi lebih baik buat kamu.`
+},
+{
+title:"You Are Special",
+text:`i hope you know how special you are to me. jangan pernah ngerasa kamu sendirian ya sayang, aku selalu berharap kamu bisa bahagia dan ngerasa dicintai. semoga hubungan kita bisa terus berjalan dengan baik, bisa saling ngerti, saling jaga, dan nggak gampang nyerah satu sama lain.`
+},
+{
+title:"A Promise For You",
+text:`maaf ya sayang, aku belum bisa ngasih apa-apa buat kamu di hari spesial kamu ini. maaf belum bisa bikin hari ini jadi lebih istimewa dengan sesuatu yang bisa kamu pegang. tapi tunggu nanti yaa, aku pengen bisa ngasih sesuatu buat kamu, walaupun sederhana, semoga bisa bikin kamu seneng. jangan sedih yaa, yang penting kamu tahu kalau aku sayang banget sama kamu. i hope someday i can give you more than just words. ❤️`
+},
+{
+title:"I Love You More ♡",
+text:`once again, happy birthday my love. i love you so much, more than words can say. semoga aku masih bisa ngerayain banyak ulang tahun kamu ke depannya. stay happy, stay healthy, and always be my favorite girl. love youuu. 💗`
+}
+];
+
+let page=0,bookOpened=false;
+
+function openBook(){
+ if(bookOpened)return;
+ bookOpened=true;
+ document.getElementById('book').classList.add('open');
+ setTimeout(()=>{
+  document.getElementById('bookControls').classList.add('show');
+  document.getElementById('bookHint').textContent=
+  "The first page is yours. Turn it slowly ♡";
+  showPage();
+  rainHearts(18);
+ },1200);
+}
+
+function showPage(){
+ const p=bookPages[page];
+ const paper=document.getElementById('rightPaper');
+ paper.classList.remove('page-turn');
+ void paper.offsetWidth;
+ paper.classList.add('page-turn');
+ document.getElementById('pageTitle').textContent=p.title;
+ document.getElementById('pageText').textContent=p.text;
+ document.getElementById('pageNumber').textContent=
+ 'PAGE 0'+(page+1)+' / 0'+bookPages.length;
+ document.getElementById('nextPageBtn').textContent=
+ page===bookPages.length-1?'FINISH BOOK ♡':'NEXT PAGE →';
+}
+function nextPage(){
+ if(page<bookPages.length-1){
+  page++;showPage();rainHearts(4);
+ }else{
+  document.getElementById('bookDone').style.display='inline-block';
+  document.getElementById
